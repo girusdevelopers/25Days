@@ -1,6 +1,7 @@
 import { config } from "dotenv";
 const dev = process.env.NODE_ENV !== "production";
 config({ path: `.env.${dev ? "development" : process.env.NODE_ENV}` });
+
 export const CREDENTIALS = process.env.CREDENTIALS === "true";
 export const {
   NODE_ENV,
@@ -15,5 +16,4 @@ export const {
   MONGODB_URI,
   BASE_URL,
   DB_NAME,
-  AudioUrlBase,
 } = process.env;
