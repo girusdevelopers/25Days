@@ -28,6 +28,11 @@ function initializeApp() {
   app.use(express.urlencoded({ extended: true }));
   app.use(helmet.crossOriginResourcePolicy({ policy: "cross-origin" }));
 
+
+
+
+
+  
   // Error Handling
   app.use(errorMiddleware);
 }

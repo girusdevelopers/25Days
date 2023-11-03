@@ -1,7 +1,6 @@
 import HomeRoute from '@routes/index.route';
 import articleRoutes from '@routes/article.route'
-
-
+import S3Routes from '@routes/magazine.route'
 
 const routes = [
   {
@@ -12,14 +11,12 @@ const routes = [
     path: '/auth',
     func: articleRoutes,
   },
-//  {
-//     path: '/auth',
-//     func: artistRoutes,
-//   },
-//   {
-//     path: '/audio',
-//     func: audioRoutes,
-//   },
+
+ 
+  {
+    path: '/s3',
+    func: S3Routes,
+  },
 // {
 //   path: '/admin',
 //   func: adminRoutes,
