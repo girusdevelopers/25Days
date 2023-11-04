@@ -31,14 +31,9 @@ const upload = multer({
   storage,
   limits: { fileSize: 1000000000, files: 2 },
 });
-
-// Use your s3Router for the '/s3' path
+ 
 app.use('/s3', s3Router);
-
-// Continue with your listUpload and other configurations
-
-//app.listen(4000, () => console.log('listening on port 4000'));
-
+ 
 
 
 app.listen(PORT, () => {
