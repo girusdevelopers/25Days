@@ -4,17 +4,37 @@ import { NODE_ENV } from "@config";
 import { MONGODB_URI, PORT } from '@config';
 import validateEnv from "@utils/validateEnv";
 import routes from './routes';
-import connection from '@/databases';
+import connectDatabase from '@/databases';
 
 
 validateEnv();
-connection(MONGODB_URI);
+connectDatabase(MONGODB_URI);
 
 const version = '/v1';
 routes.forEach((route) => {
   const path = version + route.path;
   app.use(path, route.func);
 });
+
+
+import * as dotenv from 'dotenv';
+dotenv.config();
+import express from 'express';
+import multer from 'multer';
+import { listUploads } from '@/s3service'; // Assuming you have a function named listUploads
+import s3Router from './routes/magazine.route'; // Import the router you created
+
+//const app = express();
+
+const storage = multer.memoryStorage();
+const upload = multer({
+  storage,
+  limits: { fileSize: 1000000000, files: 2 },
+});
+ 
+app.use('/s3', s3Router);
+ 
+
 
 app.listen(PORT, () => {
   logger.info(`======= ENV: ${NODE_ENV} =======`);
