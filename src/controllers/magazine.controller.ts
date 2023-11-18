@@ -14,18 +14,19 @@ export const upload = async (req: Request, res: Response) => {
   try {
     const results = await s3Uploadv3(req.files as Express.Multer.File[]);
 
-    console.log(results);
-    const file_location=results;
-    const user = await Magazine.create({
+    // console.log(results);
+    const file_location=results.key;
+    const download= results.location
+    const magazine = await Magazine.create({
       MagazineTitle,
       description,
-      File_Location:`${BASE_URL}/v1/s3/readstream/${file_location}`,
-     
+      File_Location:`${BASE_URL}/v1/readstream/${file_location}`,
+      download_file:download
     });
     console.log(file_location);
     res.json({
       message: "uploaded successfully",
-      user: user
+      magazine: magazine
     });
   } catch (err) {
    res.send(err)
@@ -43,6 +44,7 @@ export const upload = async (req: Request, res: Response) => {
 //   }
 // };
 import { Location, S3 } from 'aws-sdk'; 
+import location from "aws-sdk/clients/location";
 export const listUpload = async (req,res) => {
   const s3 = new S3();
 
@@ -62,5 +64,36 @@ export const listUpload = async (req,res) => {
   } catch (err) {
     console.error('Error listing objects from S3:', err);
     throw err;
+  }
+};
+
+
+export const allmagazine =async (req , res) => {
+  try {
+      const banners= await Magazine.find({});
+
+      res.status(200).json(banners)
+  }catch(error){
+      res.status(400).json("not found")
+  }
+}
+
+
+export const updateMagazineDetails = async (req, res) => {
+  const { MagazineTitle, description } = req.body;
+  const Id = req.params.id; // Assuming you pass the audio ID in the route URL
+  // const currentDate = new Date();
+  // const curr_date= currentDate.toLocaleTimeString();
+ 
+  try {
+    const magazine = await Magazine.findByIdAndUpdate({_id: Id},{$set:{MagazineTitle,description}, new:true})
+   
+    if (!magazine) {
+      return res.status(404).json({ error: "Audio not found" });
+    }
+    await magazine.save();
+    return res.status(200).json(magazine);
+  } catch (error) {
+    return res.status(400).json({ error: "Details not updated." });
   }
 };

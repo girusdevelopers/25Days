@@ -44,6 +44,7 @@ import { PutObjectCommand, S3Client } from '@aws-sdk/client-s3';
 import { Location, S3 } from 'aws-sdk'; // Import S3 from 'aws-sdk' for AWS SDK version 2
 import { v4 as uuidv4 } from 'uuid';
 import {AWS_BUCKET_NAME,AWS_REGION} from '@/config/index'
+import location from 'aws-sdk/clients/location';
 
 
 // export const s3Uploadv3 = async (files: Express.Multer.File[]) => {
@@ -80,39 +81,79 @@ import {AWS_BUCKET_NAME,AWS_REGION} from '@/config/index'
 //   return key
 // }
 
+export const s3Uploadv3 = async (files: Express.Multer.File[]) => {
+  let uploadResult;
+  let location;
+  let key
+  if (!files || files.length === 0) {
+    // Handle the case when files are undefined or empty
+    console.error('No files to upload.');
+    return [];
+  }
+  const s3client = new S3Client();
+  const uploadedFiles = [];
+  for (const file of files) {
+    const originalfilename=file.originalname.replace(/ /g, '');
+     key = `${uuidv4()}-${originalfilename}`;
+    const params = {
+      Bucket: process.env.AWS_BUCKET_NAME as string,
+      // Region: AWS_REGION,
+      Key: `uploads/${key}`,
+      Body: file.buffer,
+    };
+     uploadResult = await s3client.send(new PutObjectCommand(params));
+      location = `https://${AWS_BUCKET_NAME}.s3.${AWS_REGION}.amazonaws.com/uploads/${key}`;
+     
+    uploadedFiles.push({ key, location });
+  }
+  console.log(location)
+  const results={
+    location,
+    key
+  }
+  // const result ={
+  //   uploadResult,location
+  // }
+  // console.log(uploadResult)
+  // console.log(results)
+  return results
+}
+
 
 
 // import { S3Client, PutObjectCommand } from "@aws-sdk/client-s3";
 // import { v4 as uuidv4 } from "uuid";
 
-export const s3Uploadv3 = async (files) => {
-  if (!files || files.length === 0) {
-    console.error("No files to upload.");
-    return null;
-  }
+// export const s3Uploadv3 = async (files) => {
+//   let location;
+//   if (!files || files.length === 0) {
+//     console.error("No files to upload.");
+//     return null;
+//   }
 
-  const s3client = new S3Client();
-  const uploadedKeys = [];
+//   const s3client = new S3Client();
+//   const uploadedKeys = [];
+//   try {
+//   for (const file of files) {
+//     const originalFilename = file.originalname.replace(/ /g, "");
+//     const key = `${uuidv4()}-${originalFilename}`;
+//     const params = {
+//       Bucket: process.env.AWS_BUCKET_NAME,
+//       Key: `uploads/${key}`,
+//       Body: file.buffer,
+//     };
+//       const files = await s3client.send(new PutObjectCommand(params));
+//       location = `https://${AWS_BUCKET_NAME}.s3.${AWS_REGION}.amazonaws.com/uploads/${key}`;
+//       console.log(location)
+//       return files
+//       // uploadedKeys.push( files. );
+//     } catch (error) {
+//       console.error("Error uploading file:", error);
+//     }
+//   }
 
-  for (const file of files) {
-    const originalFilename = file.originalname.replace(/ /g, "");
-    const key = `${uuidv4()}-${originalFilename}`;
-    const params = {
-      Bucket: process.env.AWS_BUCKET_NAME,
-      Key: `uploads/${key}`,
-      Body: file.buffer,
-    };
-
-    try {
-      await s3client.send(new PutObjectCommand(params));
-      uploadedKeys.push(key);
-    } catch (error) {
-      console.error("Error uploading file:", error);
-    }
-  }
-
-  return uploadedKeys;
-};
+//   return files;
+// };
 
 
 

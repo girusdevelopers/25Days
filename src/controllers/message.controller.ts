@@ -1,6 +1,6 @@
 import Message from "@/models/message.model";
 
-export const uploade = async(req,res)=>{
+export const upload = async(req,res)=>{
     try{
         const {title,description,url } = req.body;
 
@@ -13,9 +13,7 @@ export const uploade = async(req,res)=>{
             description:description,
             url:url
         })
-        message.save();
         res.status(200).json(message)
-
     }catch(error){
         res.status(500).json("error")
     }
@@ -32,11 +30,12 @@ export const getall = async(req,res) =>{
 
 }
 
-export const edit = async(req,res) => {
+export const UpdateMessage = async(req,res) => {
     try{
         const {id} = req.params;
         const {title,description,url } = req.body;
         const message = await Message.findByIdAndUpdate({_id: id},{$set:{title,description,url}, new:true})
+        await message.save();
         res.status(200).json(message);
     }catch(error){
         res.status(500).json("error")

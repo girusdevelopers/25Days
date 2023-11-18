@@ -3,23 +3,24 @@ import multer from "multer";
 import { s3Uploadv3 } from "@/utils/s3service";
 import { AWS_BUCKET_NAME, BASE_URL } from "@/config";
 import app from "@/app";
+import location from "aws-sdk/clients/location";
 
-app.use(multer().array("myFile")); 
+// app.use(multer().array("song")); 
 
 export const success = async (req, res) => {
     const { title, artist, description, lyrics} = req.body;
     try {
-      // const results = await s3Uploadv3(req.files as Express.Multer.File[]);
+      const results = await s3Uploadv3(req.files as Express.Multer.File[]);
 
     // console.log(results);
-    // const file_location=results;
+    const file_location=results.key;
+    const download= results.location;
     const audio = await Audio.create({
       title,
       artist,
-      description,
       lyrics,
-      // File_Location:`${BASE_URL}/v1/s3/readstream/${file_location}`,
-     
+      File_Location:`${BASE_URL}/v1/readstream/${file_location}`,
+      download_file: download
     });
 
       // const audio = Audio.create({
@@ -28,8 +29,8 @@ export const success = async (req, res) => {
       //   description,
       //   lyrics,
       //   });
-      (await audio).save();
-      return res.status(200).json("Details uploaded successfully");
+      // (await audio).save();
+      return res.status(200).json(audio);
     } catch (error) {
       return res.status(400).json({ error: "Details not uploaded." });
     }

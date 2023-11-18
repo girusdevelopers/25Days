@@ -3,7 +3,8 @@ import audioRoutes from "@routes/audio.route";
 import userRoutes from "@routes/user.route"
 import adminRoutes from "@routes/admin.route"
 import S3Routes from "@routes/magazine.route"
-
+import bannerRoutes from "@routes/banner.route"
+import MessageRoutes from "@routes/message.route"
 
 
 
@@ -26,8 +27,16 @@ const routes = [
     func: adminRoutes,
   },
   {
-    path: '/s3',
+    path: '/magazine',
     func: S3Routes,
+  },
+  {
+    path: '/banner',
+    func: bannerRoutes,
+  },
+  {
+    path: '/message',
+    func: MessageRoutes,
   },
 
 ];

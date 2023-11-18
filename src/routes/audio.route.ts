@@ -5,7 +5,8 @@ import {success, updateAudioDetails,
     getAudioById} from "@/controllers/audio.controller"
 const router = Router();
 
-// router.post("/audioupload",  success);//upload
+router.post("/audioupload",  success);//upload
+
 
 // router.put('/audio/:id', updateAudioDetails);//update/
 

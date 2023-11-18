@@ -4,11 +4,11 @@ import * as message from '@/controllers/message.controller';
 const router = Router();
 
 
-router.post("uploade",message.uploade)
+router.post("/upload",message.upload)
 
 router.get("/allmessages",message.getall)
 
-router.put("/edit/:id",message.edit)
+router.put("/update/:id",message.UpdateMessage)
 
 router.delete('/deletemessage/:id',message.deletebyId);
 

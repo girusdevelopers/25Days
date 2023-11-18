@@ -24,7 +24,7 @@ function initializeApp() {
   app.use(compression());
   app.use(express.json());
   app.use(cookieParser());
-  app.use(morgan(LOG_FORMAT, { stream, immediate: true }));
+  // app.use(morgan(LOG_FORMAT, { stream, immediate: true }));
   app.use(express.urlencoded({ extended: true }));
   app.use(helmet.crossOriginResourcePolicy({ policy: "cross-origin" }));
 
