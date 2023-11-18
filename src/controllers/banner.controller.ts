@@ -8,7 +8,6 @@ import Banner from "@/models/banner.model";
 // app.use(multer().array("song")); 
 
 export const bannerupload = async (req, res) => {
-    const { title, artist, description, lyrics} = req.body;
     try {
       const results = await s3Uploadv3(req.files as Express.Multer.File[]);
 

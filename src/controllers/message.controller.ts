@@ -11,7 +11,7 @@ export const upload = async(req,res)=>{
         const message = await Message.create({
             title:title,
             description:description,
-            url:url
+            YouTube_Url:url
         })
         res.status(200).json(message)
     }catch(error){
@@ -42,10 +42,11 @@ export const UpdateMessage = async(req,res) => {
     }
 }
 
-export const findbyId =async (req,res) => {
+export const findbytitle =async (req,res) => {
     try{
-        const {id}=req.params;
-        const message =await Message.findById(id);
+        const {title}=req.params;
+        console.log(title)
+        const message =await Message.find({title});
         res.status(200).json(message);
     }catch(error){
         res.status(500).json("error")

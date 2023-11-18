@@ -12,6 +12,6 @@ router.put("/update/:id",message.UpdateMessage)
 
 router.delete('/deletemessage/:id',message.deletebyId);
 
-router.get("/findbyId/:id", message.findbyId)
+router.get("/findbytitle/:title", message.findbytitle)
 
 export default router;

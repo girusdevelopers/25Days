@@ -5,7 +5,7 @@ import adminRoutes from "@routes/admin.route"
 import S3Routes from "@routes/magazine.route"
 import bannerRoutes from "@routes/banner.route"
 import MessageRoutes from "@routes/message.route"
-
+import articleRoutes from "@routes/article.route"
 
 
 const routes = [
@@ -38,7 +38,10 @@ const routes = [
     path: '/message',
     func: MessageRoutes,
   },
-
+  {
+    path: '/article',
+    func: articleRoutes,
+  },
 ];
 
 export default routes;
